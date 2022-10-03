@@ -1,0 +1,241 @@
+Today's schedule: #1- dryRun
+                  #2- tags
+                  #3- html reports
+
+Upcoming topics:  #4- Background
+                  #5- Hooks
+                  #6- Parameterization
+                  #7- dataTables
+                  #8- scenario outlines
+                  #9- parallel testing
+                  #10- report generation
+
+
+- We will be focusing more on "Tell me about your framework?" question.
+
+
+-----------------------------------------------------------------------------------
+
+First project:  Maven(build) + Selenium(Automation tool-driver) + TestNG(testing tool)
+
+- src
+        - main
+        - test
+            - java
+                - com.cydeo
+                    - tests
+                        - base
+                          -TestBase
+                        - tests (rest of our test packages)
+                    - utilities
+                        - Driver
+                        - ConfigurationReader
+                        - BrowserUtils
+                    - pages
+
+
+    - configuration.properties
+    - pom.xml
+
+
+====================================================================
+
+- BDD has 2 layers.
+
+#1- Business layer: FEATURE FILES
+    - Feature files will be storing the different features, scenarios, and re-usable steps in Gherkin language.
+    - Business side is mostly for collaboration with non-technical people
+
+#2- Implementation layer: STEP DEFINITIONS
+    - Technical people implement the 'STEP DEFINITIONS' to convert steps (from feature files) into concrete actions.
+
+-----------------------------------------------------------------------------------------------
+
+- Is Cucumber a testing tool?
+    - Cucumber is not automation tool
+    - Cucumber is a tool that is used to implement BDD
+    - Therefore, it does not come with any assertions or any programming logic.
+    - That's why we have to use the dependencies with "cucumber-java", "cucumber-junit" to be able to develop some programming logic and also be able to generate some test approach with assertions.
+
+
+TestNG Assertions: Assert.assertTrue(boolean, "failure message");
+TestNG Assertions: Assert.assertEquals(actual,expected,"failure message)
+
+JUNIT Assertions: Assert.assertTrue("failure message", boolean);
+JUNIT Assertions: Assert.assertEquals("failure message", expected,actual);
+
+--------------------------------------------------------------------------------
+
+Given, When, Then, And, But
+
+    --> all of these keywords we use in the feature files are only for communication (making sense) purpose
+    --> they dont change the functionality of the step_definitions
+
+- Our code will be executed in the order we create in the feature files.
+- Each scenario will be executed by top to bottom, and each step will be calling it step_definition method from its own package &class.
+
+GIVEN: is used for pre-conditions
+
+Ex:
+     Given user is already logged in and ready to do something
+     Given user is already on the home page
+     Given user is already on the login page
+     Given user is already on the search page
+
+
+     Given I am on the search page
+
+     Given driver is logged in
+
+     Given officer is logged in
+
+
+WHEN: is used for when some actions happen
+
+    When user enters librarian user name
+
+    When user clicks to some link
+
+    When user searches for something
+
+
+AND: is used for when you many repeating lines of any keyword
+BUT: is similar for "AND" but for when we are comparing or some negative scenario happening
+THEN: is used for when the verification is happening
+
+    - Then user should see title is something
+
+    - Then user should see the dashboard
+
+    - Then user should see the image is displayed
+
+
+
+-----------------------------------------------------------------------------------------------
+
+ DRYRUN
+
+- Dryrun: turns on and off the running of step_definitions.
+- If I don't want to actually run my code, and just want to get my snippets for implementing, I will turn dryRun on by giving "true" value
+
+dryRun = true --> do not run my step_definitions, but only check if any step is missing snippet
+dryRun = false --> this will turn off dryRun, and our code will run as expected.
+
+--> How do we generate step_definition "snippets" for unimplemented steps:
+
+#1- We can run our Runner class to auto-generate our snippets
+#2- We can write new step in feature file and hover on them to select option provided by IntelliJ to generate my snippets.
+
+
+-----------------------------------------------------------------------------------------------
+
+TAGS : Tags are used to group different scenarios together
+
+    - We can use tags to include or exclude some scenarios.
+
+    - If we put the @Tag on top of the .feature file, it will effect the whole feature file
+    - If we put it on top of a Scenario, it will only effect that scenario
+    - You can have as many tags as you want for a feature file or a scenario
+
+- How do we include or exclude different tags together?
+- How do we use different tags together?
+
+- or :
+    - "or" keyword can be used for checking condition
+    - when we use or, we are being LESS specific, less selective
+    - if either one of the tags are matching, the scenario or feature will be executed
+    - or is like || in java.
+    - if either one of the sides are matching, it will execute the scenario or feature file.
+
+- and
+    - "and" keyword can be used for checking conditions as well
+    - when we use "and" keyword, we are being MORE specific
+    - "and" is similar to "&&" in java
+    - the tags on the both side has to be matching for a scenario or feature to be executed
+
+- and not
+    - "and not" keyword can be used for excluding conditions
+
+    @Regression and not @eating
+
+-----------------------------------------------------------------------------------------------
+
+Preferences > Plugins
+Plugins:
+	Cucumber for java
+	Gherkin
+
+Cucumber BDD Automation Framework:
+
+Structure / Layers:
+
+	#1 Feature files and scenarios
+		- we add file that has extension .feature
+		- type scenario in Gherkin and English languages
+		- feature files goto src/test/resources/features package
+
+		EX:
+		Scenario: User search title verification
+	    Given User is on Google home page
+	    When User searches for apple
+	    Then User should see apple in the title
+
+    #2 Step defition classes with implementation methods:
+    	- step def classes goto step_definions package
+    	- we add a java class with methods
+    	- each method will have a matching Gherkin scenario step:
+
+    	public class Google_StepDefinitions {
+
+		    @Given("User is on Google home page")
+		    public void user_is_on_google_home_page() {
+		        Driver.getDriver().get("https://www.google.com");
+
+		    }
+
+    #3. Page objects and utilites.
+    	Inside step definition methods, we write selenium automation code using our Utilities and page object model classes. add assertions.
+
+    	POM classes goto pages package
+    	Utility classes goto utilites package.
+
+    #4 CukesRunners:
+    	They goto runners package, and in runners class, we define path to step definitions, and feature files, tags, report plugs etc:
+
+    @RunWith(Cucumber.class)
+	@CucumberOptions(
+	        features = "src/test/resources/features",
+	        glue = "com/cybertek/step_definitions",
+	        dryRun = false
+	)
+	public class CukesRunner {
+	}
+========================================
+
+ @RunWith(Cucumber.class) -> this annotation comes from junit.
+ It basically saying to run the class as Cucumber BDD tests.
+
+ features => we define address of/path to feature files in our project
+ glue => location/path that points to step definitions
+ dryRun = false => run the cucumber feature files
+ dryRun = true => do not run, just check if all feature file scenario steps have a matching step defition
+
+-----------------------------------------------------------------------------------------------
+
+P.I.Q:
+
+- WHERE DO YOU RUN YOUR TESTS FROM?
+- WHAT IS THE TRIGGERING POINT OF YOUR FRAMEWORK?
+    - CukesRunner
+    - TestRunner
+    - Runner
+    - Runner class is the class where we control/trigger our whole framework.
+
+#1- Runner class should know which type of report we should be generating
+#2- Runner class should know where we store our step_definitions
+#3- Runner class should know where we store our feature files
+#4- Runner class should know if we want to run our tests dryRun = true or false
+#5- Runner class should know which features or scenarios we want to run through tags
+
+- How do we generate different types of reports?
+- We provide "plugin" keyword in our Runner class under @CucumberOptions

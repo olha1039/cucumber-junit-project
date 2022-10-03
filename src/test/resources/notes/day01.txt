@@ -1,0 +1,58 @@
+Upcoming topics:  #1- dryRun
+                  #2- tags
+                  #3- html reports#4- Background
+                  #5- Hooks
+                  #6- Parameterization
+                  #7- dataTables
+                  #8- scenario outlines
+                  #9- parallel testing
+                  #10- report generation
+
+
+- We will be focusing more on "Tell me about your framework?" question.
+
+
+====================================================================
+
+
+DDT: DATA DRIVEN TESTING FRAMEWORK
+    - Data Driven Testing:  Executing the same tests against different test data.
+    - Data Driven Testing Framework : is the framework we are able to read data from an external file and use it in our source code.
+    - We can get the data from:
+        - MS Excel
+        - MS Access
+        - Database
+        - Feature files
+        - Configuration.properties
+
+- Keyword Driven Testing:
+    - Creating testing structure based on some keywords that are executable.
+    - This requires a lot of time to invest in to even make it work, but also it is hard to maintain, and hard to scale since the object repositories, and keyword repositories have to me maintained and expanded as the framework gets bigger.
+
+
+- TDD : TEST DRIVEN DEVELOPMENT: (BUG FREE DEVELOPMENT)
+- There is a repeating development cycle with TDD.
+
+#1- Write tests before writing any source code.
+#2- Run the tests, and tests will fail.
+#3- Write minimum amount of code to make the tests pass.
+#4- Run the tests, and tests will PASS.
+#5- REFACTOR AND REPEAT
+
+
+- In TDD developers are writing @Tests in the preferred PROGRAMMING LANGUAGE.
+- That's why it is not readable or understandable for the non-technical team members of the team
+- That's why we will be using BDD.
+
+- @Test (s) are written in programming language
+- Scenarios are written in English in Gherkin language.
+
+-----------------------------------------------------------------------------
+
+- Why are we not using TestNG and using JUNIT?
+    #1- Because the community mostly using Cucumber with JUNIT.
+    - more questions
+    - more answers
+    - more demand
+    - more opportunities
+    #2- We don't need all of the annotations coming from TestNG
